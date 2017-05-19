@@ -1,0 +1,130 @@
+
+DataType:
+	NULL(0),
+	BOOL(1),
+	BYTE(2),
+	SHORT(3),
+	INT(4),
+	LONG(5),
+	FLOAT(6),
+	DOUBLE(7),
+	UTF_STRING(8),
+	BOOL_ARRAY(9),
+	BYTE_ARRAY(10),
+	SHORT_ARRAY(11),
+	INT_ARRAY(12),
+	LONG_ARRAY(13),
+	FLOAT_ARRAY(14),
+	DOUBLE_ARRAY(15),
+	UTF_STRING_ARRAY(16),
+	SFS_ARRAY(17),
+	SFS_OBJECT(18),
+	CLASS(19)
+
+Object:
+	SFSObject|
+	SFSArray|
+	Object_*
+
+
+SFSObject:
+	DataType:uint8 = SFS_OBJECT
+	Size:uint16
+	Elements:[Size] {
+		KeySize:uint16 = [0,255]
+		Key:[KeySize]uint8
+		Value:Object
+	}
+
+SFSArray:
+	DataType:uint8 = SFS_ARRAY
+	Size:uint16
+	Elements:[Size] {
+		Value:Object
+	}
+
+Object_Null:
+	DataType:uint8 = NULL
+
+Object_Bool:
+	DataType:uint8 = BOOL
+	Value:uint8 = (0, 1)
+
+Object_BoolArray:
+	DataType:uint8 = BOOL_ARRAY
+	Size:uint16
+	Elements:[Size]uint8 = (0,1)
+
+Object_Byte:
+	DataType:uint8 = BYTE
+	Value:uint8
+
+Object_ByteArray:
+	DataType:uint8 = BYTE_ARRAY
+	Size:uint32
+	Elements:[Size]uint8
+
+Object_Short:
+	DataType:uint8 = SHORT
+	Value:int16
+
+Object_ShortArray:
+	DataType:uint8 = SHORT_ARRAY
+	Size:uint16
+	Elements:[Size]int16
+
+Object_Int:
+	DataType:uint8 = INT
+	Value:int32
+
+Object_IntArray:
+	DataType:uint8 = INT_ARRAY
+	Size:uint16
+	Elements:[Size]int32
+
+Object_Long:
+	DataType:uint8 = LONG
+	Value:int64
+
+Object_LongArray:
+	DataType:uint8 = LONG_ARRAY
+	Size:int16
+	Elements:[Size]int64
+
+Object_Float:
+	DataType:uint8 = FLOAT
+	Value:float32
+
+Object_FloatArray:
+	DataType:uint8 = FLOAT_ARRAY
+	Size:int16
+	Elements:[Size]float32
+
+Object_Double:
+	DataType:uint8 = DOUBLE
+	Value:float64
+
+Object_DoubleArray:
+	DataType:uint8 = DOUBLE_ARRAY
+	Size:int16
+	Elements:[Size]float64
+
+Object_UTFString:
+	DataType:uint8 = UTF_STRING
+	Size: int16
+	Value: String([Size]uint8, "UTF-8")
+
+Object_UTFStringArray:
+	DataType:uint8 = UTF_STRING_ARRAY
+	Size: int16
+	Value: [Size] {
+		StrLen: int16
+		StrData: String([StrLen]uint8, "UTF-8")
+	}
+
+Object_Class: SFSObject {
+		"$C" = ClassName:String,
+		"$F" = Fields:SFSArray
+		...
+	}
+
